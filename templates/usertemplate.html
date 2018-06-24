@@ -1,0 +1,144 @@
+<!doctype html>
+<head>
+<title>Raise IT Task Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/w3.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-flat.css">
+
+
+
+<body class="w3-padding-64" onclick="removemessage()">
+<header class="w3-container w3-top">
+
+<div class="w3-card-4 w3-flat-wet-asphalt">
+	<div class="w3-bar">
+	<button id="openNav" class="w3-button w3-bar-item w3-xxlarge" onclick="w3_open()">&#9776;</button>
+	<div class="w3-cell"><h4 class="w3-text w3-bar-item">Raise IT Task Tracker</h4></div>	
+	</div>
+</header>
+
+{% if message %} <div id="removemessageonclick" class="w3-animate-zoom w3-container w3-card-4"><h3 class="w3-text w3-center">Message:{{ message }}</h3></div>   {% endif %}
+
+
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-margin-left w3-margin-top w3-margin-bottom" style="display:none" id="mySidebar"
+	onclick="w3_close()">
+  <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'My_Task');">My Task</button>
+  <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Task_Main');">Task List</button>
+  <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Add_Task')">Add Task</button>
+  <button class="w3-bar-item w3-button tablink" onclick="openLink(event, 'Edit_Task'); tablecoltodropdown_task()">Update Task</button>
+</div>
+
+
+
+<div id="main">
+
+	{% block content %}
+    
+	{% endblock %}
+
+</div></div></div>
+<footer class="w3-container w3-bottom">
+	<div class="w3-cell-row w3-container w3-card-4 w3-flat-wet-asphalt">
+		<h6 class="w3-text w3-quarter w3-cell-middle">User : {{ name }} </h6>
+		<h6 class="w3-text w3-quarter w3-cell-middle">Role : {{Role}}</h6>
+		<h6 class="w3-text w3-quarter w3-cell"></h6>
+		<form action="{{ url_for('logout')}}" method='get'>
+		<button class="w3-cell w3-quarter w3-btn w3-right w3-medium" class="w3-right">logout</a>
+		</form>
+ </footer>
+</div>
+</body>
+
+<script>
+
+
+
+//Search function
+$(document).ready(function(){
+	  $("#Search_1").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#TaskList_data tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+	
+//Search function
+$(document).ready(function(){
+	  $("#Search_2").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#TaskList_data tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+
+
+//side bar
+function openLink(evt, animName) {
+  var i, x, tablinks;
+  x = document.getElementsByClassName("tab");
+  for (i = 0; i < x.length; i++) {
+     x[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+     tablinks[i].className = tablinks[i].className.replace(" w3-flat-wet-asphalt", "");
+  }
+  document.getElementById(animName).style.display = "block";
+  evt.currentTarget.className += " w3-flat-wet-asphalt";
+  w3_close()
+}
+
+
+function w3_open() {
+  document.getElementById("main").style.marginLeft = "25%";
+  document.getElementById("mySidebar").style.width = "25%";
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("openNav").style.display = 'none';
+}
+
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("openNav").style.display = "inline-block";
+}
+
+
+function removemessage() {
+	document.getElementById("removemessageonclick").style.display = "none";
+}
+
+function tablecoltodropdown_task() {
+	
+	var items=[], options=[];
+
+	//Iterate all td's in second column
+
+	$('#My_TaskList tbody tr td:nth-child(2)').each( function(){
+	   //add item to array
+	   items.push( $(this).text() );       
+	});
+
+	//restrict array to unique items
+	var items = $.unique( items );
+
+	//iterate unique array and build array of select options
+	$.each( items, function(i, item){
+	    options.push('<option value="' + item + '">' + item + '</option>');
+	})
+
+	//finally empty the select and append the items from the array
+	$('#ET_Task').empty().append( options.join() );
+
+}
+
+
+
+</script>
+
+
+
+

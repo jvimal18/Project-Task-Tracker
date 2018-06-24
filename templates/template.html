@@ -1,0 +1,25 @@
+
+<head>
+<title> Raise IT Task Tracker</title>
+</head>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/w3.css') }}">
+
+{% if message %}
+
+<div class="w3-text  w3-center">
+<h3> {{ message }} </h3>
+</div>   
+{% endif %}
+
+
+
+{% block content %}
+    
+{% endblock %}
+
+</div>
+</body>
+
+
+

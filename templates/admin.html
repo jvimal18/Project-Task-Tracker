@@ -1,0 +1,273 @@
+{% extends "admintemplate.html" %}
+{% block content %}
+
+{# Add Task Form -- Completed #}
+<div id="Add_Task" class="w3-container tab" style="display:none">
+ <h2 class="w3-center we-text w3-card-2">Add Task</h2>
+	<form class="w3-container w3-card-2" action="{{ url_for('addtask') }}" method='post' name="add_task">
+	<br/>
+ 			<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Task Owner Name</h6>
+			<select class="w3-select w3-third w3-cell" name="owner" required>
+    		<option value="" disabled selected >Choose Task Owner Name</option>
+    			<option value="unassigned" selected>Un-Assigned</option>
+    		{% for item in userlist %}
+    			<option value="{{ item }}">{{ item }}</option>
+    		{% endfor %}
+    		</select>	
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Task Name </h6>
+    		<input class="w3-input w3-third w3-cell" name= "TaskName" type="text" required>
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Summary </h6>
+    		<input class="w3-input w3-third w3-cell" name="Summary" type="text" required>
+    		</div>
+    		<br/>
+    		 		
+    		<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Status</h6>
+			<select class="w3-select w3-third w3-cell" name="Status">
+    		<option value="" disabled selected>Choose Status</option>
+    			<option value="Not Started" selected>Not Started</option>
+				<option value="In Progress">In Progress</option>
+				<option value="Pending">Pending</option>
+				<option value="On Hold">On Hold</option>
+				<option value="Completed">Completed</option>
+				<option value="Discontinued">Discontinued</option>
+			</select>
+			<div class="w3-center w3-third w3-cell "><p><button class="w3-btn w3-flat-wet-asphalt" name="b_add_Task" id="b_add_Task">Add Task</button></p></div>
+			</div>
+			<br/>
+			
+			<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Percentage Of Completion</h6>
+			<select class="w3-select w3-third w3-cell" name="percent">
+    		<option value="" disabled selected>Choose Percentage Complete</option>
+    		    <option value="0" selected>0%, SOP Complete</option>
+				<option value="10">10%, SOP Complete</option>
+				<option value="25">25%, Design Complete</option>
+				<option value="50">50%, Development Complete</option>
+				<option value="65">65%, Dev Testing Complete</option>
+				<option value="80">80%, UAT Complete</option>
+				<option value="90">90%, Prod Setup Read</option>
+				<option value="100">100%, Prod Rollout Complete</option>
+			</select>
+			</div>
+			<br/>
+			   		
+			<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Assigned By </h6>
+    		<input class="w3-input w3-third w3-cell" name="managedby" type="text">
+    		</div>
+    		<br/>
+			
+    		<div class="w3-cell-now">
+    		<h6 class="w3-text w3-third w3-cell">ETA</h6>
+    		<input class="w3-input w3-third w3-cell" name="eta" type="date" data-date-inline-picker="true" />
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Comment </h6>
+    		<textarea class="w3-input w3-third w3-cell" name="comments" style="resize:none"></textarea>
+    		</div>
+    		<br/>
+    		
+    		<br/>
+    		<br/>
+    		<br/>
+</form>
+</div>
+<script>
+$('#add_task').on('submit', function(e){
+  e.preventDefault()
+  var form_data = $(this).serialize()
+  $.ajax({
+    url: 127.0.0.1:1808/addtask,
+    type: this.method,
+    data: form_data
+  });
+
+});
+</script>
+
+
+{# Edit Task Form #}
+
+<div id="Edit_Task" class="w3-container tab" style="display:none">
+ <h2 class="w3-center w3-text w3-card-2">Edit</h2>
+	<form class="w3-container w3-card-4" action="{{ url_for('updatetask') }}" method='post'>
+	<br/>
+    		
+ 			<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Select Task</h6>
+			<select class="w3-select w3-third w3-cell" name="taskname" id="ET_Task" required>
+    		<option value="" disabled selected>Choose Task</option>
+    		</select>	
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Task Owner Name</h6>
+			<select class="w3-select w3-third w3-cell" name="owner" id="ET_Taskowner" required>
+    		<option value="" disabled selected>Choose Task Owner Name</option>
+    		{% for item in userlist %}
+    			<option value="{{ item }}">{{ item }}</option>
+    		{% endfor %}
+    		</select>	
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Summary </h6>
+    		<input class="w3-input w3-third w3-cell" name="summary" type="text">
+    		</div>
+    		<br/>
+    		 		
+    		<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Status</h6>
+			<select class="w3-select w3-third w3-cell" name="status">
+    		<option value="" disabled selected>Choose Status</option>
+				<option value="1">In Progress</option>
+				<option value="2">Pending</option>
+				<option value="3">On Hold</option>
+				<option value="4">Completed</option>
+				<option value="5">Discontinued</option>
+			</select>
+			<div class="w3-center w3-third w3-cell "><p>
+			<button class="w3-btn w3-flat-wet-asphalt" name="b_edit_Task" id="b_edit_Task">Update Task</button>
+			</p></div>
+			</div>
+			<br/>
+			
+			<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >Percentage Of Completion</h6>
+			<select class="w3-select w3-third w3-cell" name="percent">
+    		<option value="" disabled selected>Choose Percentage Complete</option>
+    		    <option value="0" selected>0%, SOP Complete</option>
+				<option value="10">10%, SOP Complete</option>
+				<option value="25">25%, Design Complete</option>
+				<option value="50">50%, Development Complete</option>
+				<option value="65">65%, Dev Testing Complete</option>
+				<option value="80">80%, UAT Complete</option>
+				<option value="90">90%, Prod Setup Read</option>
+				<option value="100">100%, Prod Rollout Complete</option>
+			</select>
+			</div>
+			<br/>
+			
+    		<div class="w3-cell-now">
+    		<h6 class="w3-text w3-third w3-cell">ETA</h6>
+    		<input class="w3-input w3-third w3-cell" name="eta" type="date" data-date-inline-picker="true" />
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Assigned By </h6>
+    		<input class="w3-input w3-third w3-cell" name="managedby" type="text">
+    		</div>
+    		<br/>
+    					
+			<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Comment </h6>
+    		<textarea class="w3-input w3-third w3-cell" name="comments"></textarea>
+    		</div>
+    		<br/>
+    		
+    		<br/>
+    		<br/>
+    	
+</form>
+</div>
+
+{# Create User #}
+
+<div id="Create_User" class="w3-container tab" style="display:none">
+ <h2 class="w3-center w3-text w3-card-2">Create User</h2>
+	<form class="w3-container w3-card-4" action="{{ url_for('adduser') }}" method='POST'>
+	<br/>
+ 			<div class="w3-cell-row">
+  			<h6 class="w3-text w3-third w3-cell" >User Name</h6>
+			<input class="w3-input w3-third w3-cell" name="user" type="text" required>	
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Email ID</h6>
+    		<input class="w3-input w3-third w3-cell" name="emailid" type="text" required>
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Password</h6>
+    		<input class="w3-input w3-third w3-cell" name="password" type="text" required>
+    		</div>
+    		<br/>
+    		
+    		<div class="w3-cell-row">
+    		<h6 class="w3-text w3-third w3-cell">Admin</h6>
+    		  <div class="w3-third w3-cell">
+  			  <input class="w3-radio" type="radio" name="admin" required> 
+ 			  <label class="w3-text"> Yes</label>
+  			  <input class="w3-radio" type="radio" name="admin">
+  			  <label class="w3-text">No</label>
+  			  </div>			  
+			  </div>
+			<br/>
+    		
+    		<br/>
+    		<br/>
+    		<div class="w3-center "><p><button class="w3-btn w3-flat-wet-asphalt">Add User</button></p></div>
+		</form>
+</div>
+
+
+
+
+
+{# this div is to get task list display for admin #}
+ <div id="Task_Main" class="w3-container w3-animate-opacity tab" style="display:block">
+  <h2 class="w3-border w3-card-2 w3-center">Task List</h2>
+  <div>
+
+  <input class="w3-input w3-center w3-card-2"  type="text" id="Search" placeholder="Search..">
+  <br/>
+  <table class="w3-table-all w3-hoverable w3-small w3-card-2" style="table-layout:fixed;" id="TaskList">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>TaskName</th>
+        <th>Summary</th>
+        <th>Status</th>
+        <th>Percent</th>
+        <th>ETA</th>
+        <th style="width: 20% !important">Comments</th>
+        <th>Managed By</th>
+      </tr>
+    </thead>
+    <tbody id="TaskList_data">
+    {% for i in task %}
+	<tr>
+	<td>{{ i['owner'] }}</td>
+	<td>{{ i['taskname'] }}</td>
+	<td>{{ i['summary'] }}</td>
+	<td>{{ i['status'] }}</td>
+	<td>{{ i['percent'] }}</td>
+	<td>{{ i['eta'] }}</td>
+	<td style="white-space : pre; word-break:break-all">{{ i['comments'] }}</td>
+	<td>{{ i['managedby'] }}</td>
+	</tr>
+	{% endfor %}
+	    </tbody>
+  </table>
+</div>
+</div>
+{% endblock %}
+
+
